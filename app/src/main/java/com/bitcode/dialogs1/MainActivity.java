@@ -3,10 +3,14 @@ package com.bitcode.dialogs1;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
@@ -24,12 +28,58 @@ public class MainActivity extends AppCompatActivity {
 
     private void initListeners() {
         btnAlertDialog.setOnClickListener(new BtnAlertDialogClickListener());
+        btnDatePickerDialog.setOnClickListener(new BtnDatePickerDialogClickListener());
+        btnTimePickerDialog.setOnClickListener(new BtnTimePickerDialogClickListener());
     }
 
     private void initViews() {
         btnAlertDialog = findViewById(R.id.btnAlertDialog);
         btnTimePickerDialog = findViewById(R.id.btnTimePickerDialog);
         btnDatePickerDialog = findViewById(R.id.btnDatePickerDialog);
+    }
+
+    private class BtnTimePickerDialogClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            TimePickerDialog timePickerDialog =
+                    new TimePickerDialog(
+                            MainActivity.this,
+                            new MyOnTimeSetListener(),
+                            23,
+                            55,
+                            false
+                    );
+            timePickerDialog.show();
+        }
+    }
+
+    private class MyOnTimeSetListener implements TimePickerDialog.OnTimeSetListener {
+        @Override
+        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+            btnTimePickerDialog.setText(hourOfDay + " : " + minute);
+        }
+    }
+
+    private class BtnDatePickerDialogClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            DatePickerDialog datePickerDialog =
+                    new DatePickerDialog(
+                            MainActivity.this,
+                            new MyOnDateSetListener(),
+                            2022,
+                            4,
+                            14
+                    );
+            datePickerDialog.show();
+        }
+    }
+
+    private class MyOnDateSetListener implements DatePickerDialog.OnDateSetListener {
+        @Override
+        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+            btnDatePickerDialog.setText(year + " - " + (month+1) + " - " + dayOfMonth);
+        }
     }
 
     private class BtnAlertDialogClickListener implements View.OnClickListener {
